@@ -17,7 +17,6 @@
       .grab-btn-active { box-shadow: 0 10px 25px -5px rgba(234, 179, 8, 0.5), 0 8px 10px -6px rgba(234, 179, 8, 0.5); }
       @keyframes custom-bounce { 0%, 100% { transform: translateY(-5%) scale(1.05); } 50% { transform: translateY(0) scale(1); } }
       .animate-soft-bounce { animation: custom-bounce 2s infinite ease-in-out; }
- 
     </style>
   </head>
   <body class="min-h-screen bg-red-50 text-slate-800 flex flex-col items-center p-4">
@@ -56,11 +55,12 @@
           <h2 id="display-name" class="text-2xl font-black mb-1">你好</h2>
           <p class="opacity-80 text-sm font-medium">全場剩餘：<span id="rem-count" class="font-bold underline underline-offset-4">--</span> 個</p>
         </div>
+
         <div id="timer-box" class="hidden w-full z-10 px-4">
           <div id="timer-display" class="w-full text-center py-4 px-6 rounded-[2rem] backdrop-blur-sm shadow-inner transition-all duration-500"></div>
-      </div>
+        </div>
 
-        <button id="grab-btn" class="z-10 w-36 h-36 rounded-full border-[10px] border-yellow-500 bg-yellow-400 text-red-700 font-black text-5xl shadow-2xl flex items-center justify-center transition-all active:scale-90 animate-soft-bounce grab-btn-active disabled:animate-none disabled:opacity-50 disabled:bg-gray-400 disabled:border-gray-500">
+        <button id="grab-btn" class="z-10 w-36 h-36 rounded-full border-[10px] border-yellow-500 bg-yellow-400 text-red-700 font-black text-5xl shadow-2xl flex items-center justify-center transition-all active:scale-90 animate-soft-bounce grab-btn-active disabled:animate-none disabled:opacity-50">
           開
         </button>
 
@@ -209,7 +209,6 @@
 
         isValidPhone(phone) { return /^09\d{8}$/.test(phone); }
 
-        // --- 修復：新增時間狀態判斷邏輯 ---
         getTimeStatus() {
           const now = Date.now();
           const { startTime, duration } = this.state.config;
@@ -308,7 +307,6 @@
       window.addEventListener("load", () => engine.init());
       window.addEventListener("rp:auth-ready", () => el("loading-screen").classList.add("hidden"));
 
-      // --- 修復：時間格式化與 UI 更新 ---
       function fmtMs(ms) {
         const s = Math.ceil(ms / 1000);
         const m = Math.floor(s / 60);
@@ -321,19 +319,18 @@
         const display = el('timer-display');
         const btn = el("grab-btn");
 
-        // 若無設定開始時間則隱藏
         if (status.status === 'active' && !engine.state.config.startTime) {
           box.classList.add('hidden');
           const isOut = engine.state.pool.remainingCount <= 0;
           btn.disabled = isOut;
           btn.innerText = isOut ? "搶光" : "開";
+          btn.className = btn.className.replace(/bg-(slate|yellow)-\d+/, isOut ? "bg-slate-400" : "bg-yellow-400");
           return;
         }
 
         box.classList.remove('hidden');
         
         if (status.status === 'not_started') {
-          // --- 距離開始還有 (黃金配色) ---
           display.className = "w-full py-4 px-6 bg-white/10 border border-white/20 rounded-[1.5rem] backdrop-blur-md shadow-lg";
           display.innerHTML = `
             <div class="text-yellow-300 text-[11px] font-black uppercase tracking-[0.2em] mb-1 opacity-90">活動即將開始</div>
@@ -343,9 +340,8 @@
             </div>`;
           btn.disabled = true;
           btn.innerText = "等待";
-          btn.classList.replace('bg-yellow-400', 'bg-slate-400'); // 變灰色
+          btn.className = btn.className.replace(/bg-yellow-400/, "bg-slate-400");
         } else if (status.status === 'active') {
-          // --- 剩餘時間 (綠色/緊急紅配色) ---
           const urgent = status.remaining < 10000;
           const themeClass = urgent 
             ? "bg-red-500/20 border-red-400/50 shadow-[0_0_15px_rgba(239,68,68,0.3)]" 
@@ -360,16 +356,16 @@
           const isOut = engine.state.pool.remainingCount <= 0;
           btn.disabled = isOut;
           btn.innerText = isOut ? "搶光" : "開";
-          btn.classList.replace('bg-slate-400', 'bg-yellow-400');
+          btn.className = btn.className.replace(/bg-slate-400/, "bg-yellow-400");
         } else {
-          // --- 已結束 (灰色配色) ---
           display.className = "w-full py-4 px-6 bg-black/20 border border-white/10 rounded-[1.5rem] opacity-60";
           display.innerHTML = `<div class="text-gray-300 font-black uppercase tracking-widest text-sm">活動時間已截止</div>`;
           btn.disabled = true;
           btn.innerText = "結束";
-          btn.classList.replace('bg-yellow-400', 'bg-slate-500');
+          btn.className = btn.className.replace(/bg-yellow-400/, "bg-slate-500");
         }
       }
+
       window.addEventListener("rp:state-update", (e) => {
         const s = e.detail;
         el("rem-amount").innerText = `$${Math.floor(s.pool.remainingAmount)}`;
@@ -394,7 +390,6 @@
           </div>`).join("") || '<p class="text-gray-500 text-center">暫無紀錄</p>';
       });
 
-      // --- 每秒自動更新 UI ---
       setInterval(() => {
         if (!el('game-screen').classList.contains('hidden')) {
           updateTimerUI();
@@ -448,7 +443,6 @@
           el("conf-count").value = Math.floor(c.count);
           el("conf-prob").value = c.probability;
           el("conf-duration").value = c.duration;
-          // 修復：帶入現有的開始時間
           if (c.startTime) {
             const d = new Date(c.startTime);
             el('conf-starttime').value = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
