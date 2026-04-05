@@ -3,388 +3,173 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>闆娘紅包場 - 雲端即時版</title>
+    <title>闆娘紅包場</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap");
-      body {
-        font-family: "Noto Sans TC", sans-serif;
+      #timer-display {
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.05em;
       }
-      .custom-scrollbar::-webkit-scrollbar {
-        width: 4px;
-      }
-      .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: #fee2e2;
-        border-radius: 10px;
-      }
-      .grab-btn-active {
-        box-shadow:
-          0 10px 25px -5px rgba(234, 179, 8, 0.5),
-          0 8px 10px -6px rgba(234, 179, 8, 0.5);
-      }
-      @keyframes custom-bounce {
-        0%,
-        100% {
-          transform: translateY(-5%) scale(1.05);
-        }
-        50% {
-          transform: translateY(0) scale(1);
-        }
-      }
-      .animate-soft-bounce {
-        animation: custom-bounce 2s infinite ease-in-out;
-      }
+      body { font-family: "Noto Sans TC", sans-serif; }
+      .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+      .custom-scrollbar::-webkit-scrollbar-thumb { background: #fee2e2; border-radius: 10px; }
+      .grab-btn-active { box-shadow: 0 10px 25px -5px rgba(234, 179, 8, 0.5), 0 8px 10px -6px rgba(234, 179, 8, 0.5); }
+      @keyframes custom-bounce { 0%, 100% { transform: translateY(-5%) scale(1.05); } 50% { transform: translateY(0) scale(1); } }
+      .animate-soft-bounce { animation: custom-bounce 2s infinite ease-in-out; }
+ 
     </style>
   </head>
-  <body
-    class="min-h-screen bg-red-50 text-slate-800 flex flex-col items-center p-4"
-  >
-    <div
-      id="loading-screen"
-      class="fixed inset-0 bg-red-50 z-[100] flex flex-col items-center justify-center transition-opacity duration-500"
-    >
-      <div
-        class="animate-spin border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 mb-4"
-      ></div>
+  <body class="min-h-screen bg-red-50 text-slate-800 flex flex-col items-center p-4">
+    
+    <div id="loading-screen" class="fixed inset-0 bg-red-50 z-[100] flex flex-col items-center justify-center transition-opacity duration-500">
+      <div class="animate-spin border-4 border-red-600 border-t-transparent rounded-full w-12 h-12 mb-4"></div>
       <p class="text-red-600 font-bold animate-pulse">雲端系統連線中...</p>
     </div>
 
     <header class="w-full max-w-md text-center py-8">
-      <h1
-        id="title-header"
-        class="text-4xl font-black text-red-600 cursor-default select-none mb-2 flex items-center justify-center gap-2"
-      >
+      <h1 id="title-header" class="text-4xl font-black text-red-600 cursor-default select-none mb-2 flex items-center justify-center gap-2">
         <span>🧧</span><span>闆娘搶紅包</span>
       </h1>
-      <p class="text-red-400 text-xs tracking-widest uppercase font-bold">
-        Real-time Cloud v5.7
-      </p>
+      <p class="text-red-400 text-xs tracking-widest uppercase font-bold">Real-time Cloud</p>
     </header>
 
-    <div
-      id="login-screen"
-      class="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 transform transition-all"
-    >
+    <div id="login-screen" class="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 transform transition-all">
       <div class="mb-8 text-center">
         <div class="text-6xl mb-4">🌍</div>
         <h2 class="text-2xl font-bold text-gray-800">歡迎進入紅包場</h2>
         <p class="text-gray-400 text-sm mt-2">請輸入您的資訊以參加活動</p>
       </div>
       <div class="space-y-4">
-        <input
-          id="name-input"
-          type="text"
-          placeholder="請輸入您的名字"
-          class="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-red-500 focus:bg-white outline-none transition-all text-center text-lg font-bold"
-        />
-        <input
-          id="phone-input"
-          type="tel"
-          maxlength="10"
-          placeholder="請輸入手機號碼"
-          class="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-red-500 focus:bg-white outline-none transition-all text-center text-lg font-bold"
-        />
-        <button
-          id="enter-btn"
-          class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-red-200 transition-all active:scale-95 text-lg"
-        >
-          加入搶紅包行列
-        </button>
+        <input id="name-input" type="text" placeholder="請輸入您的名字" class="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-red-500 focus:bg-white outline-none transition-all text-center text-lg font-bold" />
+        <input id="phone-input" type="tel" maxlength="10" placeholder="請輸入手機號碼" class="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-red-500 focus:bg-white outline-none transition-all text-center text-lg font-bold" />
+        <button id="enter-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-red-200 transition-all active:scale-95 text-lg">加入搶紅包行列</button>
       </div>
     </div>
 
-    <main
-      id="game-screen"
-      class="hidden w-full max-w-md flex flex-col gap-6 animate-in fade-in duration-500"
-    >
-      <div
-        class="relative bg-red-600 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col items-center p-8 text-white gap-6"
-      >
+    <main id="game-screen" class="hidden w-full max-w-md flex flex-col gap-6 animate-in fade-in duration-500">
+      <div class="relative bg-red-600 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col items-center p-8 text-white gap-6">
         <div class="text-center z-10">
-          <div
-            class="bg-yellow-400 text-red-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-yellow-200 shadow-inner"
-          >
+          <div class="bg-yellow-400 text-red-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-yellow-200 shadow-inner">
             <span class="text-3xl">🧧</span>
           </div>
           <h2 id="display-name" class="text-2xl font-black mb-1">你好</h2>
-          <p class="opacity-80 text-sm font-medium">
-            全場剩餘：<span
-              id="rem-count"
-              class="font-bold underline underline-offset-4"
-              >--</span
-            >
-            個
-          </p>
+          <p class="opacity-80 text-sm font-medium">全場剩餘：<span id="rem-count" class="font-bold underline underline-offset-4">--</span> 個</p>
         </div>
+        <div id="timer-box" class="hidden w-full z-10 px-4">
+          <div id="timer-display" class="w-full text-center py-4 px-6 rounded-[2rem] backdrop-blur-sm shadow-inner transition-all duration-500"></div>
+      </div>
 
-        <div id="timer-box" class="hidden w-full z-10">
-          <div
-            id="timer-display"
-            class="w-full text-center py-3 px-4 rounded-2xl"
-          ></div>
-        </div>
-
-        <button
-          id="grab-btn"
-          class="z-10 w-36 h-36 rounded-full border-[10px] border-yellow-500 bg-yellow-400 text-red-700 font-black text-5xl shadow-2xl flex items-center justify-center transition-all active:scale-90 animate-soft-bounce grab-btn-active disabled:animate-none disabled:opacity-50 disabled:bg-gray-400 disabled:border-gray-500 disabled:text-gray-200"
-        >
+        <button id="grab-btn" class="z-10 w-36 h-36 rounded-full border-[10px] border-yellow-500 bg-yellow-400 text-red-700 font-black text-5xl shadow-2xl flex items-center justify-center transition-all active:scale-90 animate-soft-bounce grab-btn-active disabled:animate-none disabled:opacity-50 disabled:bg-gray-400 disabled:border-gray-500">
           開
         </button>
 
-        <p class="text-[10px] opacity-40 italic z-10 tracking-widest">
-          ENCRYPTED REAL-TIME SYNC
-        </p>
+        <p class="text-[10px] opacity-40 italic z-10 tracking-widest">ENCRYPTED REAL-TIME SYNC</p>
 
-        <div
-          id="msg-modal"
-          class="hidden absolute inset-0 bg-black/60 flex items-center justify-center p-6 z-50 backdrop-blur-md"
-        >
-          <div
-            class="bg-white w-full py-10 px-6 rounded-[2rem] shadow-2xl text-center text-slate-800 transform scale-100"
-          >
+        <div id="msg-modal" class="hidden absolute inset-0 bg-black/60 flex items-center justify-center p-6 z-50 backdrop-blur-md">
+          <div class="bg-white w-full py-10 px-6 rounded-[2rem] shadow-2xl text-center text-slate-800 transform scale-100">
             <div id="msg-icon" class="text-5xl mb-4">🎉</div>
-            <p
-              id="msg-content"
-              class="text-xl font-black mb-8 whitespace-pre-line leading-relaxed"
-            ></p>
-            <button
-              id="msg-close-btn"
-              class="w-full py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-bold shadow-lg transition-all active:scale-95"
-            >
-              確認
-            </button>
+            <p id="msg-content" class="text-xl font-black mb-8 whitespace-pre-line leading-relaxed"></p>
+            <button id="msg-close-btn" class="w-full py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-bold shadow-lg transition-all active:scale-95">確認</button>
           </div>
         </div>
       </div>
 
       <div class="grid grid-cols-2 gap-4">
-        <div
-          class="bg-white p-5 rounded-3xl shadow-sm border border-red-50 text-center"
-        >
-          <span
-            class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1"
-            >雲端剩餘總額</span
-          >
+        <div class="bg-white p-5 rounded-3xl shadow-sm border border-red-50 text-center">
+          <span class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">雲端剩餘總額</span>
           <p id="rem-amount" class="text-2xl font-black text-red-600">$0</p>
         </div>
-        <div
-          class="bg-white p-5 rounded-3xl shadow-sm border border-red-50 text-center"
-        >
-          <span
-            class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1"
-            >可領取數量</span
-          >
+        <div class="bg-white p-5 rounded-3xl shadow-sm border border-red-50 text-center">
+          <span class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">可領取數量</span>
           <p id="rem-count-2" class="text-2xl font-black text-red-600">--</p>
         </div>
       </div>
 
-      <div
-        class="bg-white rounded-3xl shadow-sm p-6 mb-10 border border-red-50"
-      >
-        <div
-          class="flex justify-between items-center mb-6 border-b border-gray-50 pb-4"
-        >
-          <h3
-            class="font-black text-slate-400 text-sm tracking-widest uppercase"
-          >
-            🕒 即時得獎榜
-          </h3>
-          <span
-            id="record-count-badge"
-            class="text-[10px] bg-red-100 text-red-600 px-3 py-1 rounded-full font-black"
-            >已領走 0 個</span
-          >
+      <div class="bg-white rounded-3xl shadow-sm p-6 mb-10 border border-red-50">
+        <div class="flex justify-between items-center mb-6 border-b border-gray-50 pb-4">
+          <h3 class="font-black text-slate-400 text-sm tracking-widest uppercase">🕒 即時得獎榜</h3>
+          <span id="record-count-badge" class="text-[10px] bg-red-100 text-red-600 px-3 py-1 rounded-full font-black">已領走 0 個</span>
         </div>
-        <div
-          id="records-list"
-          class="max-h-80 overflow-y-auto custom-scrollbar space-y-3"
-        >
+        <div id="records-list" class="max-h-80 overflow-y-auto custom-scrollbar space-y-3">
           <div class="text-center py-10 opacity-20 italic">尚無連線紀錄</div>
         </div>
       </div>
     </main>
 
-    <div
-      id="admin-modal"
-      class="hidden fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 z-[200]"
-    >
-      <div
-        class="bg-white w-full max-w-sm rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/20"
-      >
-        <div
-          class="bg-slate-900 p-6 text-white flex justify-between items-center"
-        >
+    <div id="admin-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 z-[200]">
+      <div class="bg-white w-full max-w-sm rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/20">
+        <div class="bg-slate-900 p-6 text-white flex justify-between items-center">
           <div class="flex items-center gap-2">
-            <span class="text-xl">⚙️</span
-            ><span class="font-black tracking-tight">管理員控制台</span>
+            <span class="text-xl">⚙️</span><span class="font-black tracking-tight">管理員控制台</span>
           </div>
-          <button
-            id="admin-close"
-            class="text-gray-400 hover:text-white transition-colors text-2xl"
-          >
-            &times;
-          </button>
+          <button id="admin-close" class="text-gray-400 hover:text-white transition-colors text-2xl">&times;</button>
         </div>
 
         <div id="admin-auth-view" class="p-10 space-y-6">
-          <input
-            id="admin-pw"
-            type="password"
-            placeholder="請輸入管理密碼"
-            class="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-slate-900 transition-all text-center tracking-widest"
-          />
-          <button
-            id="admin-verify-btn"
-            class="w-full bg-slate-900 text-white font-black py-4 rounded-2xl shadow-xl transition-all"
-          >
-            驗證登入
-          </button>
+          <input id="admin-pw" type="password" placeholder="請輸入管理密碼" class="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-slate-900 text-center tracking-widest" />
+          <button id="admin-verify-btn" class="w-full bg-slate-900 text-white font-black py-4 rounded-2xl shadow-xl">驗證登入</button>
         </div>
 
-        <div
-          id="admin-panel-view"
-          class="hidden p-6 space-y-5 max-h-[80vh] overflow-y-auto custom-scrollbar"
-        >
+        <div id="admin-panel-view" class="hidden p-6 space-y-5 max-h-[80vh] overflow-y-auto custom-scrollbar">
           <div class="space-y-4">
             <div class="p-4 bg-blue-50 rounded-2xl border border-blue-100">
-              <label
-                class="text-[10px] font-black text-blue-400 uppercase tracking-widest block mb-2"
-                >基本獎池設定</label
-              >
+              <label class="text-[10px] font-black text-blue-400 uppercase tracking-widest block mb-2">基本獎池設定</label>
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="text-xs font-bold text-gray-500 block mb-1"
-                    >總金額 ($)</label
-                  >
-                  <input
-                    id="conf-total"
-                    type="number"
-                    class="w-full p-3 bg-white border border-blue-100 rounded-xl font-bold"
-                  />
+                  <label class="text-xs font-bold text-gray-500 block mb-1">總金額 ($)</label>
+                  <input id="conf-total" type="number" class="w-full p-3 bg-white border border-blue-100 rounded-xl font-bold" />
                 </div>
                 <div>
-                  <label class="text-xs font-bold text-gray-500 block mb-1"
-                    >總數量 (個)</label
-                  >
-                  <input
-                    id="conf-count"
-                    type="number"
-                    class="w-full p-3 bg-white border border-blue-100 rounded-xl font-bold"
-                  />
+                  <label class="text-xs font-bold text-gray-500 block mb-1">總數量 (個)</label>
+                  <input id="conf-count" type="number" class="w-full p-3 bg-white border border-blue-100 rounded-xl font-bold" />
                 </div>
               </div>
             </div>
 
             <div class="p-4 bg-gray-900 rounded-2xl text-white">
               <div class="flex justify-between items-center mb-3">
-                <label
-                  class="text-[10px] font-black text-gray-400 uppercase tracking-widest"
-                  >💰 獎者詳細清單</label
-                >
-                <button
-                  id="export-excel-btn"
-                  class="text-[10px] bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded font-bold transition-colors"
-                >
-                  📥 匯出 Excel
-                </button>
+                <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest">💰 獎者詳細清單</label>
+                <button id="export-excel-btn" class="text-[10px] bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded font-bold transition-colors">📥 匯出 Excel</button>
               </div>
-              <div
-                id="admin-winner-list"
-                class="text-[10px] space-y-2 max-h-40 overflow-y-auto custom-scrollbar font-mono"
-              >
+              <div id="admin-winner-list" class="text-[10px] space-y-2 max-h-40 overflow-y-auto custom-scrollbar font-mono">
                 <p class="text-gray-500 italic text-center">載入中...</p>
               </div>
             </div>
 
             <div class="p-4 bg-purple-50 rounded-2xl border border-purple-100">
-              <label
-                class="text-[10px] font-black text-purple-400 uppercase tracking-widest block mb-2"
-                >中獎率控制</label
-              >
+              <label class="text-[10px] font-black text-purple-400 uppercase tracking-widest block mb-2">中獎率控制</label>
               <div class="flex items-center gap-4">
-                <input
-                  id="conf-prob"
-                  type="range"
-                  min="0"
-                  max="100"
-                  class="flex-1 accent-purple-600"
-                />
-                <span
-                  id="prob-display"
-                  class="font-black text-purple-600 w-12 text-right"
-                  >100%</span
-                >
+                <input id="conf-prob" type="range" min="0" max="100" class="flex-1 accent-purple-600" />
+                <span id="prob-display" class="font-black text-purple-600 w-12 text-right">100%</span>
               </div>
             </div>
 
             <div class="p-4 bg-orange-50 rounded-2xl border border-orange-100">
-              <label
-                class="text-[10px] font-black text-orange-400 uppercase tracking-widest block mb-2"
-                >時間排程</label
-              >
+              <label class="text-[10px] font-black text-orange-400 uppercase tracking-widest block mb-2">時間排程</label>
               <div class="space-y-3">
-                <input
-                  id="conf-starttime"
-                  type="datetime-local"
-                  class="w-full p-3 bg-white border border-orange-100 rounded-xl font-bold text-sm"
-                />
+                <input id="conf-starttime" type="datetime-local" class="w-full p-3 bg-white border border-orange-100 rounded-xl font-bold text-sm" />
                 <div>
-                  <label
-                    class="text-xs font-bold text-gray-600 flex justify-between items-center mb-1"
-                  >
-                    <span>活動持續時間</span
-                    ><span
-                      id="duration-label"
-                      class="text-orange-600 font-black"
-                      >不限時</span
-                    >
+                  <label class="text-xs font-bold text-gray-600 flex justify-between items-center mb-1">
+                    <span>活動持續時間</span><span id="duration-label" class="text-orange-600 font-black">不限時</span>
                   </label>
-                  <input
-                    id="conf-duration"
-                    type="range"
-                    min="0"
-                    max="3600"
-                    step="30"
-                    class="w-full accent-orange-500"
-                  />
+                  <input id="conf-duration" type="range" min="0" max="3600" step="30" class="w-full accent-orange-500" />
                 </div>
               </div>
             </div>
 
-            <button
-              id="admin-save-btn"
-              class="w-full bg-red-600 hover:bg-red-700 text-white font-black py-4 rounded-2xl shadow-xl transition-all"
-            >
-              🚀 立即重置並發布新活動
-            </button>
+            <button id="admin-save-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-black py-4 rounded-2xl shadow-xl transition-all">🚀 立即重置並發布新活動</button>
           </div>
         </div>
       </div>
     </div>
 
-    <footer
-      class="mt-auto py-6 text-gray-300 text-[10px] tracking-[0.3em] uppercase font-bold"
-    >
-      Protected by Firebase Sentinel
-    </footer>
+    <footer class="mt-auto py-6 text-gray-300 text-[10px] tracking-[0.3em] uppercase font-bold">Protected by Firebase Sentinel</footer>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-      import {
-        getFirestore,
-        doc,
-        setDoc,
-        collection,
-        onSnapshot,
-        runTransaction,
-        deleteDoc,
-        getDocs,
-      } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-      import {
-        getAuth,
-        signInAnonymously,
-        onAuthStateChanged,
-      } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+      import { getFirestore, doc, setDoc, collection, onSnapshot, runTransaction, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+      import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyANoY1GfwL6NK8Rkz_Z2ewIlIm-kfILrjc",
@@ -405,13 +190,7 @@
             currentUser: null,
             userName: "",
             userPhone: "",
-            config: {
-              totalAmount: 1000,
-              count: 20,
-              probability: 100,
-              startTime: null,
-              duration: 0,
-            },
+            config: { totalAmount: 1000, count: 20, probability: 100, startTime: null, duration: 0 },
             pool: { remainingAmount: 0, remainingCount: 0, records: [] },
             isProcessing: false,
           };
@@ -428,114 +207,68 @@
           await signInAnonymously(this.auth);
         }
 
-        // 電話號碼驗證函數 (正規表達式)
-        isValidPhone(phone) {
-          const phoneRegex = /^09\d{8}$/;
-          return phoneRegex.test(phone);
+        isValidPhone(phone) { return /^09\d{8}$/.test(phone); }
+
+        // --- 修復：新增時間狀態判斷邏輯 ---
+        getTimeStatus() {
+          const now = Date.now();
+          const { startTime, duration } = this.state.config;
+          if (!startTime) return { status: 'active' };
+          if (now < startTime) return { status: 'not_started', remaining: startTime - now };
+          if (duration > 0) {
+            const end = startTime + (duration * 1000);
+            return now >= end ? { status: 'ended' } : { status: 'active', remaining: end - now };
+          }
+          return { status: 'active' };
         }
 
         startSyncing() {
-          const stateRef = doc(
-            this.db,
-            "artifacts",
-            this.gameId,
-            "public",
-            "data",
-            "game_state",
-            "current",
-          );
+          const stateRef = doc(this.db, "artifacts", this.gameId, "public", "data", "game_state", "current");
           onSnapshot(stateRef, (snap) => {
             if (snap.exists()) {
               const d = snap.data();
               this.state.config = d.config || this.state.config;
-              this.state.pool.remainingAmount = Math.floor(
-                d.remainingAmount || 0,
-              );
-              this.state.pool.remainingCount = Math.floor(
-                d.remainingCount || 0,
-              );
-              window.dispatchEvent(
-                new CustomEvent("rp:state-update", { detail: this.state }),
-              );
+              this.state.pool.remainingAmount = Math.floor(d.remainingAmount || 0);
+              this.state.pool.remainingCount = Math.floor(d.remainingCount || 0);
+              window.dispatchEvent(new CustomEvent("rp:state-update", { detail: this.state }));
             }
           });
 
-          const recRef = collection(
-            this.db,
-            "artifacts",
-            this.gameId,
-            "public",
-            "data",
-            "records",
-          );
+          const recRef = collection(this.db, "artifacts", this.gameId, "public", "data", "records");
           onSnapshot(recRef, (snap) => {
             const recs = [];
             snap.forEach((d) => recs.push(d.data()));
-            this.state.pool.records = recs.sort(
-              (a, b) => b.timestamp - a.timestamp,
-            );
-            window.dispatchEvent(
-              new CustomEvent("rp:records-update", {
-                detail: this.state.pool.records,
-              }),
-            );
+            this.state.pool.records = recs.sort((a, b) => b.timestamp - a.timestamp);
+            window.dispatchEvent(new CustomEvent("rp:records-update", { detail: this.state.pool.records }));
           });
         }
 
         async grab(name, phone) {
-          if (!this.isValidPhone(phone))
-            return {
-              success: false,
-              msg: "電話號碼格式錯誤 (需為09開頭10位數)",
-            };
-          if (this.state.isProcessing || !name)
-            return { success: false, msg: "資訊不完整" };
-          if (this.state.pool.remainingCount <= 0)
-            return { success: false, msg: "已經被搶光囉！" };
+          if (!this.isValidPhone(phone)) return { success: false, msg: "電話號碼格式錯誤" };
+          if (this.state.isProcessing || !name) return { success: false, msg: "資訊不完整" };
+          
+          const status = this.getTimeStatus();
+          if (status.status === 'not_started') return { success: false, msg: "活動還沒開始喔！" };
+          if (status.status === 'ended') return { success: false, msg: "活動已經結束了！" };
+          if (this.state.pool.remainingCount <= 0) return { success: false, msg: "已經被搶光囉！" };
 
           this.state.isProcessing = true;
           try {
-            const nameKey =
-              name.trim().replace(/\s+/g, "_") + "_" + phone.slice(-4);
-            const claimRef = doc(
-              this.db,
-              "artifacts",
-              this.gameId,
-              "public",
-              "data",
-              "claimed",
-              nameKey,
-            );
+            const nameKey = name.trim().replace(/\s+/g, "_") + "_" + phone.slice(-4);
+            const claimRef = doc(this.db, "artifacts", this.gameId, "public", "data", "claimed", nameKey);
             let resultAmount = 0;
 
             await runTransaction(this.db, async (tx) => {
-              const stateRef = doc(
-                this.db,
-                "artifacts",
-                this.gameId,
-                "public",
-                "data",
-                "game_state",
-                "current",
-              );
-              const [stSnap, clSnap] = await Promise.all([
-                tx.get(stateRef),
-                tx.get(claimRef),
-              ]);
+              const stateRef = doc(this.db, "artifacts", this.gameId, "public", "data", "game_state", "current");
+              const [stSnap, clSnap] = await Promise.all([tx.get(stateRef), tx.get(claimRef)]);
 
               if (clSnap.exists()) throw "ALREADY_CLAIMED";
               const d = stSnap.data();
               if (d.remainingCount <= 0) throw "SOLD_OUT";
 
-              let amount = 0;
-              if (d.remainingCount === 1) {
-                amount = Math.floor(d.remainingAmount);
-              } else {
-                let max = Math.floor(
-                  (d.remainingAmount / d.remainingCount) * 2,
-                );
-                amount = Math.floor(Math.random() * (max - 1)) + 1;
-              }
+              let amount = (d.remainingCount === 1) 
+                ? Math.floor(d.remainingAmount) 
+                : Math.floor(Math.random() * (Math.floor((d.remainingAmount / d.remainingCount) * 2) - 1)) + 1;
               if (amount <= 0) amount = 1;
 
               resultAmount = amount;
@@ -543,71 +276,27 @@
                 remainingAmount: Math.floor(d.remainingAmount - amount),
                 remainingCount: d.remainingCount - 1,
               });
-              tx.set(
-                doc(
-                  collection(
-                    this.db,
-                    "artifacts",
-                    this.gameId,
-                    "public",
-                    "data",
-                    "records",
-                  ),
-                ),
-                {
-                  name,
-                  phone,
-                  amount: Math.floor(amount),
-                  timestamp: Date.now(),
-                  timeStr: new Date().toLocaleString(),
-                },
-              );
-              tx.set(claimRef, {
-                name,
-                phone,
-                amount: Math.floor(amount),
-                claimedAt: Date.now(),
+              tx.set(doc(collection(this.db, "artifacts", this.gameId, "public", "data", "records")), {
+                name, phone, amount: Math.floor(amount), timestamp: Date.now(), timeStr: new Date().toLocaleString(),
               });
+              tx.set(claimRef, { name, phone, amount: Math.floor(amount), claimedAt: Date.now() });
             });
             return { success: true, amount: resultAmount };
           } catch (e) {
-            return {
-              success: false,
-              msg: e === "ALREADY_CLAIMED" ? "領過囉" : "系統忙碌",
-            };
-          } finally {
-            this.state.isProcessing = false;
-          }
+            return { success: false, msg: e === "ALREADY_CLAIMED" ? "你領過囉！" : "系統忙碌中" };
+          } finally { this.state.isProcessing = false; }
         }
 
         async resetGame(newConfig) {
-          const stateRef = doc(
-            this.db,
-            "artifacts",
-            this.gameId,
-            "public",
-            "data",
-            "game_state",
-            "current",
-          );
+          const stateRef = doc(this.db, "artifacts", this.gameId, "public", "data", "game_state", "current");
           await setDoc(stateRef, {
             config: newConfig,
             remainingAmount: Math.floor(newConfig.totalAmount),
             remainingCount: Math.floor(newConfig.count),
             updatedAt: Date.now(),
           });
-          const cols = ["records", "claimed"];
-          for (const col of cols) {
-            const snap = await getDocs(
-              collection(
-                this.db,
-                "artifacts",
-                this.gameId,
-                "public",
-                "data",
-                col,
-              ),
-            );
+          for (const col of ["records", "claimed"]) {
+            const snap = await getDocs(collection(this.db, "artifacts", this.gameId, "public", "data", col));
             for (const d of snap.docs) await deleteDoc(d.ref);
           }
         }
@@ -617,59 +306,105 @@
       const el = (id) => document.getElementById(id);
 
       window.addEventListener("load", () => engine.init());
-      window.addEventListener("rp:auth-ready", () =>
-        el("loading-screen").classList.add("hidden"),
-      );
+      window.addEventListener("rp:auth-ready", () => el("loading-screen").classList.add("hidden"));
 
+      // --- 修復：時間格式化與 UI 更新 ---
+      function fmtMs(ms) {
+        const s = Math.ceil(ms / 1000);
+        const m = Math.floor(s / 60);
+        return `${String(m).padStart(2,'0')}:${String(s % 60).padStart(2,'0')}`;
+      }
+
+      function updateTimerUI() {
+        const status = engine.getTimeStatus();
+        const box = el('timer-box');
+        const display = el('timer-display');
+        const btn = el("grab-btn");
+
+        // 若無設定開始時間則隱藏
+        if (status.status === 'active' && !engine.state.config.startTime) {
+          box.classList.add('hidden');
+          const isOut = engine.state.pool.remainingCount <= 0;
+          btn.disabled = isOut;
+          btn.innerText = isOut ? "搶光" : "開";
+          return;
+        }
+
+        box.classList.remove('hidden');
+        
+        if (status.status === 'not_started') {
+          // --- 距離開始還有 (黃金配色) ---
+          display.className = "w-full py-4 px-6 bg-white/10 border border-white/20 rounded-[1.5rem] backdrop-blur-md shadow-lg";
+          display.innerHTML = `
+            <div class="text-yellow-300 text-[11px] font-black uppercase tracking-[0.2em] mb-1 opacity-90">活動即將開始</div>
+            <div class="flex items-center justify-center gap-2">
+              <span class="text-white/60 text-sm font-bold">倒數</span>
+              <span class="text-3xl font-black text-white tabular-nums tracking-wider">${fmtMs(status.remaining)}</span>
+            </div>`;
+          btn.disabled = true;
+          btn.innerText = "等待";
+          btn.classList.replace('bg-yellow-400', 'bg-slate-400'); // 變灰色
+        } else if (status.status === 'active') {
+          // --- 剩餘時間 (綠色/緊急紅配色) ---
+          const urgent = status.remaining < 10000;
+          const themeClass = urgent 
+            ? "bg-red-500/20 border-red-400/50 shadow-[0_0_15px_rgba(239,68,68,0.3)]" 
+            : "bg-green-500/10 border-green-400/30";
+          const textClass = urgent ? "text-red-300 animate-pulse" : "text-green-300";
+
+          display.className = `w-full py-4 px-6 border rounded-[1.5rem] backdrop-blur-md transition-all duration-300 ${themeClass}`;
+          display.innerHTML = `
+            <div class="${textClass} text-[11px] font-black uppercase tracking-[0.2em] mb-1">限時搶領中</div>
+            <div class="text-3xl font-black text-white tabular-nums tracking-wider">${fmtMs(status.remaining)}</div>`;
+          
+          const isOut = engine.state.pool.remainingCount <= 0;
+          btn.disabled = isOut;
+          btn.innerText = isOut ? "搶光" : "開";
+          btn.classList.replace('bg-slate-400', 'bg-yellow-400');
+        } else {
+          // --- 已結束 (灰色配色) ---
+          display.className = "w-full py-4 px-6 bg-black/20 border border-white/10 rounded-[1.5rem] opacity-60";
+          display.innerHTML = `<div class="text-gray-300 font-black uppercase tracking-widest text-sm">活動時間已截止</div>`;
+          btn.disabled = true;
+          btn.innerText = "結束";
+          btn.classList.replace('bg-yellow-400', 'bg-slate-500');
+        }
+      }
       window.addEventListener("rp:state-update", (e) => {
         const s = e.detail;
         el("rem-amount").innerText = `$${Math.floor(s.pool.remainingAmount)}`;
         el("rem-count").innerText = Math.floor(s.pool.remainingCount);
         el("rem-count-2").innerText = Math.floor(s.pool.remainingCount);
-
-        const btn = el("grab-btn");
-        if (s.pool.remainingCount <= 0) {
-          btn.disabled = true;
-          btn.innerText = "搶光";
-        } else {
-          btn.disabled = false;
-          btn.innerText = "開";
-        }
+        updateTimerUI();
       });
 
       window.addEventListener("rp:records-update", (e) => {
         const records = e.detail;
         el("record-count-badge").innerText = `已領走 ${records.length} 個`;
-        el("records-list").innerHTML =
-          records
-            .map(
-              (r) => `
+        el("records-list").innerHTML = records.map((r) => `
           <div class="flex justify-between items-center p-4 bg-gray-50 rounded-2xl border border-gray-100">
             <div class="font-black text-slate-700">${r.name}</div>
             <div class="text-red-500 font-black text-lg">+$${Math.floor(r.amount)}</div>
-          </div>`,
-            )
-            .join("") ||
-          '<div class="text-center py-10 opacity-20 italic">尚無紀錄</div>';
+          </div>`).join("") || '<div class="text-center py-10 opacity-20 italic">尚無紀錄</div>';
 
-        el("admin-winner-list").innerHTML =
-          records
-            .map(
-              (r) => `
+        el("admin-winner-list").innerHTML = records.map((r) => `
           <div class="flex justify-between border-b border-gray-800 pb-1">
             <span>${r.name} (${r.phone})</span>
             <span class="text-yellow-400 font-bold">$${Math.floor(r.amount)}</span>
-          </div>`,
-            )
-            .join("") || '<p class="text-gray-500 text-center">暫無紀錄</p>';
+          </div>`).join("") || '<p class="text-gray-500 text-center">暫無紀錄</p>';
       });
 
+      // --- 每秒自動更新 UI ---
+      setInterval(() => {
+        if (!el('game-screen').classList.contains('hidden')) {
+          updateTimerUI();
+        }
+      }, 1000);
+
       el("enter-btn").onclick = () => {
-        const n = el("name-input").value.trim(),
-          p = el("phone-input").value.trim();
+        const n = el("name-input").value.trim(), p = el("phone-input").value.trim();
         if (!n) return alert("請輸入您的名字");
         if (!engine.isValidPhone(p)) return alert("請輸入正確的手機號碼");
-
         engine.state.userName = n;
         engine.state.userPhone = p;
         el("display-name").innerText = `你好, ${n}`;
@@ -678,46 +413,32 @@
       };
 
       el("grab-btn").onclick = async () => {
-        const res = await engine.grab(
-          engine.state.userName,
-          engine.state.userPhone,
-        );
+        const res = await engine.grab(engine.state.userName, engine.state.userPhone);
         if (res.success) {
-          el("msg-content").innerText =
-            `恭喜！\n搶到了 $${Math.floor(res.amount)}`;
+          el("msg-content").innerText = `恭喜！\n搶到了 $${Math.floor(res.amount)}`;
           el("msg-modal").classList.remove("hidden");
         } else alert(res.msg);
       };
 
-      el("msg-close-btn").onclick = () =>
-        el("msg-modal").classList.add("hidden");
+      el("msg-close-btn").onclick = () => el("msg-modal").classList.add("hidden");
 
       el("export-excel-btn").onclick = () => {
         const records = engine.state.pool.records;
-        if (records.length === 0) return alert("目前沒有得獎紀錄可供匯出");
-        let csvContent = "\ufeff姓名,電話,金額,領取時間\n";
-        records.forEach((r) => {
-          csvContent += `${r.name},${r.phone},${Math.floor(r.amount)},${r.timeStr}\n`;
-        });
-        const blob = new Blob([csvContent], {
-          type: "text/csv;charset=utf-8;",
-        });
+        if (records.length === 0) return alert("目前沒有得獎紀錄");
+        let csv = "\ufeff姓名,電話,金額,領取時間\n";
+        records.forEach(r => csv += `${r.name},${r.phone},${Math.floor(r.amount)},${r.timeStr}\n`);
         const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = `紅包得獎名單_${new Date().toLocaleDateString()}.csv`;
+        link.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" }));
+        link.download = `紅包得獎名單.csv`;
         link.click();
       };
 
       let clicks = 0;
       el("title-header").onclick = () => {
-        if (++clicks >= 5) {
-          el("admin-modal").classList.remove("hidden");
-          clicks = 0;
-        }
+        if (++clicks >= 5) { el("admin-modal").classList.remove("hidden"); clicks = 0; }
         setTimeout(() => (clicks = 0), 2000);
       };
-      el("admin-close").onclick = () =>
-        el("admin-modal").classList.add("hidden");
+      el("admin-close").onclick = () => el("admin-modal").classList.add("hidden");
       el("admin-verify-btn").onclick = () => {
         if (el("admin-pw").value === "13491349") {
           el("admin-auth-view").classList.add("hidden");
@@ -727,6 +448,11 @@
           el("conf-count").value = Math.floor(c.count);
           el("conf-prob").value = c.probability;
           el("conf-duration").value = c.duration;
+          // 修復：帶入現有的開始時間
+          if (c.startTime) {
+            const d = new Date(c.startTime);
+            el('conf-starttime').value = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+          }
         } else alert("密碼錯誤");
       };
 
@@ -736,9 +462,7 @@
           count: Math.floor(Number(el("conf-count").value)),
           probability: Number(el("conf-prob").value),
           duration: Number(el("conf-duration").value),
-          startTime: el("conf-starttime").value
-            ? new Date(el("conf-starttime").value).getTime()
-            : null,
+          startTime: el("conf-starttime").value ? new Date(el("conf-starttime").value).getTime() : null,
         };
         if (confirm("確定重置並發布新活動？")) {
           await engine.resetGame(newConf);
@@ -746,12 +470,10 @@
         }
       };
 
-      el("conf-prob").oninput = () =>
-        (el("prob-display").innerText = `${el("conf-prob").value}%`);
+      el("conf-prob").oninput = () => (el("prob-display").innerText = `${el("conf-prob").value}%`);
       el("conf-duration").oninput = () => {
         const d = el("conf-duration").value;
-        el("duration-label").innerText =
-          d > 0 ? `${Math.floor(d / 60)}分${d % 60}秒` : "不限時";
+        el("duration-label").innerText = d > 0 ? `${Math.floor(d / 60)}分${d % 60}秒` : "不限時";
       };
     </script>
   </body>
